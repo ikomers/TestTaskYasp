@@ -1,5 +1,6 @@
 package luxms.testTask.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import luxms.testTask.service.DataLoadService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -8,10 +9,10 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
 public class DataLoadServiceImpl implements CommandLineRunner, DataLoadService {
     private final String filePath;
     private final CSVBookLoaderServiceImpl csvBookLoaderService;
-    private static final Log log = LogFactory.getLog(CSVBookLoaderServiceImpl.class);
 
     public DataLoadServiceImpl(CSVBookLoaderServiceImpl csvBookLoaderService, @Value("${dataset.file.path}") String filePath) {
 

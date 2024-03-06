@@ -4,6 +4,7 @@ import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import luxms.testTask.model.Book;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,8 +25,9 @@ import java.util.Locale;
 @Getter
 @Service
 @Scope
+@Slf4j
 public class CSVBookLoaderServiceImpl {
-    private static final Log log = LogFactory.getLog(CSVBookLoaderServiceImpl.class);
+
 
     private List<Book> books;
 

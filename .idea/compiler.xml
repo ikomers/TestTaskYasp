@@ -7,11 +7,12 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.30/f195ee86e6c896ea47a1d39defbe20eb59cd149d/lombok-1.18.30.jar" />
         </processorPath>
+        <module name="luxms.testTask.main~2" />
         <module name="luxms.testTask.test" />
-        <module name="luxms.testTask.main~1" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="luxms.testTask.main~1" target="17" />
       <module name="testTask.testTask.main" target="17" />
       <module name="testTask.testTask.test" target="17" />
     </bytecodeTargetLevel>

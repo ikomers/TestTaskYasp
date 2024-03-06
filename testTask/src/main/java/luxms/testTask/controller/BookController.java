@@ -1,6 +1,7 @@
 package luxms.testTask.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import luxms.testTask.model.Book;
 import luxms.testTask.service.BookService;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@Slf4j
 public class BookController {
     private final BookService bookService;
 
@@ -26,6 +28,7 @@ public class BookController {
     ) {
         try {
             List<Book> top10Books = bookService.getTop10Books(year, column, sort);
+            log.info("Everything is correct");
             return ResponseEntity.ok().body(top10Books);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
