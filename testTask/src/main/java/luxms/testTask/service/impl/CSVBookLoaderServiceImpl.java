@@ -129,4 +129,8 @@ public class CSVBookLoaderServiceImpl {
             return null;
         }
     }
+
+    public List<Book> getBooks() {
+        return books;
+    }
 }

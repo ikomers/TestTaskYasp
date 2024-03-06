@@ -1,33 +1,54 @@
 package luxms.testTask.service.impl;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import luxms.testTask.model.Book;
-import luxms.testTask.repositories.BookRepository;
 import luxms.testTask.service.BookService;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
-    private final BookRepository bookRepository;
+
+    private final CSVBookLoaderServiceImpl csvBookLoaderService;
 
     @Override
     public List<Book> getTop10Books(Integer year, String column, String sort) {
-        Sort.Direction direction = Sort.Direction.ASC;
+        List<Book> books = csvBookLoaderService.getBooks(); // get loaded books
 
-        if (sort.equalsIgnoreCase("DESC")) {
-            direction = Sort.Direction.DESC;
-        }
-
-        Sort sorting = Sort.by(direction, column);
+        // stream for filter and sorting
+        Stream<Book> bookStream = books.stream();
 
         if (year != null) {
-            return bookRepository.findTop10ByPublicationDateYearOrderByPublicationDateAsc(year, sorting);
-        } else {
-            return bookRepository.findTop10(sorting);
+            bookStream = bookStream.filter(book -> book.getPublicationDate() != null && book.getPublicationDate().getYear() == year);
         }
+
+        Sort.Direction direction = sort.equalsIgnoreCase("DESC") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Comparator<Book> comparator = switch (column) {
+            case "book" -> Comparator.comparing(Book::getTitle);
+            case "author" -> Comparator.comparing(Book::getAuthors);
+            case "numPages" -> Comparator.comparing(Book::getNumPages);
+            case "publicationDate" -> Comparator.comparing(Book::getPublicationDate);
+            case "rating" -> Comparator.comparing(Book::getRatingScore);
+            case "numberOfVoters" -> Comparator.comparing(Book::getNumRatings);
+            default -> throw new IllegalArgumentException("Invalid column name");
+        };
+
+        List<Book> result = bookStream.sorted(comparator.thenComparing(Book::getId))
+                .limit(10)
+                .collect(Collectors.toList());
+
+
+        if (direction == Sort.Direction.DESC) {
+            Collections.reverse(result);
+        }
+        return result;
     }
 }
+
