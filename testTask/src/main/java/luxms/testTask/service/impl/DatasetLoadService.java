@@ -1,20 +1,17 @@
 package luxms.testTask.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import luxms.testTask.service.DataLoadService;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class DataLoadServiceImpl implements CommandLineRunner, DataLoadService {
-    private final String filePath;
+public class DatasetLoadService implements CommandLineRunner {
     private final CSVBookLoaderServiceImpl csvBookLoaderService;
+    private final String filePath;
 
-    public DataLoadServiceImpl(CSVBookLoaderServiceImpl csvBookLoaderService, @Value("${dataset.file.path}") String filePath) {
+    public DatasetLoadService(CSVBookLoaderServiceImpl csvBookLoaderService, @Value("${dataset.file.path}") String filePath) {
 
         this.filePath = filePath;
         this.csvBookLoaderService = csvBookLoaderService;

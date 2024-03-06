@@ -20,7 +20,8 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> getTop10Books(Integer year, String column, String sort) {
-        List<Book> books = csvBookLoaderService.getBooks(); // get loaded books
+        // get loaded books
+        List<Book> books = csvBookLoaderService.getBooks();
 
         // stream for filter and sorting
         Stream<Book> bookStream = books.stream();
@@ -49,6 +50,7 @@ public class BookServiceImpl implements BookService {
             }
         });
 
+        //rule for comparing
         Comparator<Book> comparator = switch (column) {
             case "book" -> Comparator.comparing(Book::getTitle);
             case "author" -> Comparator.comparing(Book::getAuthors);
@@ -61,15 +63,15 @@ public class BookServiceImpl implements BookService {
 
         Sort.Direction direction = sort.equalsIgnoreCase("DESC") ? Sort.Direction.DESC : Sort.Direction.ASC;
 
-        List<Book> result = bookStream.sorted(comparator)
+        List<Book> result = bookStream
+                .sorted(comparator)
                 .collect(Collectors.toList());
 
         if (direction == Sort.Direction.DESC) {
             Collections.reverse(result);
-            return result.subList(0, 10);
+            return result.subList(0, 10);    //magic digit
         }
 
-        return result.subList(0, 10);
+        return result.subList(0, 10);        //magic digit
     }
 }
-

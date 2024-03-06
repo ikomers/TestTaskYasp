@@ -6,6 +6,7 @@ import com.opencsv.CSVReaderBuilder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import luxms.testTask.model.Book;
+import luxms.testTask.service.CSVBookLoaderService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Scope;
@@ -26,9 +27,7 @@ import java.util.Locale;
 @Service
 @Scope
 @Slf4j
-public class CSVBookLoaderServiceImpl {
-
-
+public class CSVBookLoaderServiceImpl implements CSVBookLoaderService {
     private List<Book> books;
 
     public void loadBooks(String filePath) {
@@ -136,5 +135,4 @@ public class CSVBookLoaderServiceImpl {
             return null;
         }
     }
-
 }
