@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.net.URL;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Component
@@ -29,7 +29,7 @@ public class Book {
     private Integer numPages;
     private String format;
     private List<String> genres;
-    private LocalDateTime publicationDate;
+    private LocalDate publicationDate;
     private Double ratingScore;
     private Double numRatings;
     private Double numReviews;

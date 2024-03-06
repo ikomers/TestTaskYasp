@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/luxms.testTask.main.iml" filepath="$PROJECT_DIR$/.idea/modules/luxms.testTask.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/testTask.iml" filepath="$PROJECT_DIR$/.idea/testTask.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/testTask.testTask.main~1.iml" filepath="$PROJECT_DIR$/.idea/modules/testTask.testTask.main~1.iml" />
     </modules>
   </component>
 </project>

@@ -1,7 +1,8 @@
 package luxms.testTask.service.impl;
 
+import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
-
+import com.opencsv.CSVReaderBuilder;
 import luxms.testTask.model.Book;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -11,24 +12,23 @@ import java.io.FileReader;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 @Service
 public class CSVBookLoaderServiceImpl {
-
     private static final Log log = LogFactory.getLog(CSVBookLoaderServiceImpl.class);
 
     private List<Book> books;
     public void loadBooks(String filePath) {
         books = new ArrayList<>();
 
-        try (CSVReader reader = new CSVReader(new FileReader(filePath))) {
+        try (CSVReader reader = new CSVReaderBuilder(new FileReader(filePath))
+                .withCSVParser(new CSVParserBuilder().withSeparator(',').withQuoteChar('"').build()).build()) {
             String[] line;
             // skip the title
             reader.readNext();
@@ -57,12 +57,13 @@ public class CSVBookLoaderServiceImpl {
                         .price(parseBigDecimal(line[18]))
                         .url(parseUrl(line[19]))
                         .build();
-
+                if (book.getId() == 1942) {
+                    System.out.println("here");
+                }
                 books.add(book);
             }
         } catch (Exception e) {
-            log.warn("Error when reading data from CSV file");
-            log.error(e.getMessage());
+            log.warn("Error when reading data from CSV file " + e.getMessage());
         }
     }
 
@@ -90,20 +91,13 @@ public class CSVBookLoaderServiceImpl {
         }
     }
 
-    private LocalDateTime parseDate(String value) {
+
+    private LocalDate parseDate(String value) {
         try {
-            return value.trim().isEmpty() ? null : new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH)
-                    .parse(value).toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime();
-        } catch (ParseException e) {
-            try {
-                return value.trim().isEmpty() ? null : new SimpleDateFormat("MMMM dd, yyyy", Locale.ENGLISH)
-                        .parse(value).toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-            } catch (ParseException ex) {
-             //todo what if unset? it's return standart 1999-01-01 check it or add some if?
-                return null;
-            }
+            return value.trim().isEmpty() ? null :
+                    LocalDate.parse(value, DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH));
+        } catch (DateTimeParseException e) {
+            return null;
         }
     }
 
