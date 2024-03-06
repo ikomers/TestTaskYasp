@@ -9,10 +9,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class DataLoadServiceImpl implements CommandLineRunner, DataLoadService {
-
-    private static final Log log = LogFactory.getLog(CSVBookLoaderServiceImpl.class);
     private final String filePath;
     private final CSVBookLoaderServiceImpl csvBookLoaderService;
+    private static final Log log = LogFactory.getLog(CSVBookLoaderServiceImpl.class);
 
     public DataLoadServiceImpl(CSVBookLoaderServiceImpl csvBookLoaderService, @Value("${dataset.file.path}") String filePath) {
 
@@ -25,8 +24,7 @@ public class DataLoadServiceImpl implements CommandLineRunner, DataLoadService {
         try {
             csvBookLoaderService.loadBooks(filePath);
         } catch (Exception e) {
-            log.error("Error while loading CSV file");
-            log.error(e.getMessage());
+            log.error("Error while loading CSV file " + "\n" + e.getMessage());
         }
     }
 }

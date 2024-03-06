@@ -3,9 +3,11 @@ package luxms.testTask.service.impl;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
+import lombok.Getter;
 import luxms.testTask.model.Book;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import java.io.FileReader;
@@ -19,11 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+@Getter
 @Service
+@Scope
 public class CSVBookLoaderServiceImpl {
     private static final Log log = LogFactory.getLog(CSVBookLoaderServiceImpl.class);
 
     private List<Book> books;
+
     public void loadBooks(String filePath) {
         books = new ArrayList<>();
 
@@ -57,13 +62,11 @@ public class CSVBookLoaderServiceImpl {
                         .price(parseBigDecimal(line[18]))
                         .url(parseUrl(line[19]))
                         .build();
-                if (book.getId() == 1942) {
-                    System.out.println("here");
-                }
+
                 books.add(book);
             }
         } catch (Exception e) {
-            log.warn("Error when reading data from CSV file " + e.getMessage());
+            log.warn("Error when reading data from CSV file " + "\n" + e.getMessage());
         }
     }
 
@@ -71,6 +74,7 @@ public class CSVBookLoaderServiceImpl {
         try {
             return value.trim().isEmpty() ? null : Long.parseLong(value);
         } catch (NumberFormatException e) {
+            //log to file bla bla
             return null;
         }
     }
@@ -101,6 +105,7 @@ public class CSVBookLoaderServiceImpl {
         }
     }
 
+    //
     private String parseString(String value) {
         return value.trim().isEmpty() ? null : value;
     }
@@ -130,7 +135,4 @@ public class CSVBookLoaderServiceImpl {
         }
     }
 
-    public List<Book> getBooks() {
-        return books;
-    }
 }
