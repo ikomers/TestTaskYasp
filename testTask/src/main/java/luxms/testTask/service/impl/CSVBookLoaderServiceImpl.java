@@ -71,6 +71,7 @@ public class CSVBookLoaderServiceImpl implements CSVBookLoaderService {
         }
     }
 
+
     private Long parseLong(String value) {
         try {
             return value.trim().isEmpty() ? null : Long.parseLong(value);
