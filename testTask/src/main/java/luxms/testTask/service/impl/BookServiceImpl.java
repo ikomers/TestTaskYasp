@@ -67,18 +67,14 @@ public class BookServiceImpl implements BookService {
 
         Sort.Direction direction = sort.equalsIgnoreCase("DESC") ? Sort.Direction.DESC : Sort.Direction.ASC;
 
-        if (direction == Sort.Direction.DESC) {
-            List<Book> result = bookStream
-                    .sorted(comparator.reversed())
-                    .collect(Collectors.toList());
+        Comparator<Book> sortedComparator = (direction == Sort.Direction.DESC) ? comparator.reversed() : comparator;
 
-            return result.subList(0, Math.min(result.size(), 10));
-        }
-
-        List<Book> result = bookStream.sorted(comparator)
+        List<Book> result = bookStream
+                .sorted(sortedComparator)
+                .limit(10)
                 .collect(Collectors.toList());
 
-        return result.subList(0, Math.min(result.size(), 10));
+        return result;
     }
 }
 
