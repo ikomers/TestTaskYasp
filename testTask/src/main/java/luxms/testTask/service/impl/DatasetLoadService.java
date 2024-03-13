@@ -26,8 +26,7 @@ public class DatasetLoadService implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         try {
-            Resource resource = resourceLoader.getResource("classpath:" + filePath);
-            System.out.println(filePath);
+            Resource resource = resourceLoader.getResource(filePath);
             csvBookLoaderService.loadBooks(resource.getFile().getAbsolutePath());
         } catch (Exception e) {
             log.error("Error while loading CSV file " + "\n" + e.getMessage());
